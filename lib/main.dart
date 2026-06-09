@@ -160,10 +160,10 @@ class _CameraScreenState extends State<CameraScreen> {
     if (!mounted) return;
 
     final image = await controller.takePicture();
-    await controller.dispose();
 
     if (!mounted) return;
 
     await service.analyzeImage(image);
+    await controller.dispose();
   }
 }
