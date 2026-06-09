@@ -2,4 +2,5 @@ fastapi>=0.115.0
 uvicorn[standard]
 python-multipart
 httpx
-easyocr
+pytesseract
+Pillow
