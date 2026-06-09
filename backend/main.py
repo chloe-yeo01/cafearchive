@@ -5,6 +5,8 @@ from pathlib import Path
 import tempfile
 import shutil
 
+from vision_service import analyze as ocr_analyze
+
 app = FastAPI(title="CafeArchive Vision API")
 
 app.add_middleware(
@@ -21,8 +23,8 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 @app.post("/api/analyze")
 async def analyze_image(file: UploadFile = File(...)):
     """
-    Receive an image, save it temporarily, extract text via vision_analyze.
-    Returns cafe name and menu items.
+    Receive an image, save it temporarily, OCR it with EasyOCR,
+    parse cafe name and menu items.
     """
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Only image files accepted")
@@ -33,16 +35,12 @@ async def analyze_image(file: UploadFile = File(...)):
     with file_path.open("wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # Placeholder: return image path for now
-    # Real implementation: call vision_analyze here
-    return {
-        "status": "ok",
-        "filename": file.filename,
-        "file_path": str(file_path),
-        "cafe_name": None,
-        "menu_items": [],
-        "note": "vision_analyze integration pending"
-    }
+    # OCR + parse
+    result = ocr_analyze(str(file_path))
+    result["filename"] = safe_filename
+    result["file_path"] = str(file_path)
+
+    return result
 
 
 @app.get("/health")
