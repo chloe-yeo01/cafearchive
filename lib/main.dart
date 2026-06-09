@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +55,11 @@ class CafeVisionService extends ChangeNotifier {
         'POST',
         Uri.parse('$serverUrl/api/analyze'),
       );
-      request.files.add(await http.MultipartFile.fromPath('file', image.path));
+      request.files.add(await http.MultipartFile.fromPath(
+        'file',
+        image.path,
+        contentType: MediaType('image', 'jpeg'),
+      ));
       final response = await request.send();
       final body = await response.stream.bytesToString();
 
