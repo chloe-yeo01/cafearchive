@@ -43,7 +43,7 @@ class CafeVisionService extends ChangeNotifier {
   bool get loading => _loading;
 
   // Mac IP on local network (update if your IP changes)
-      static const String serverUrl = 'http://172.20.0.108:8000';
+      static const String serverUrl = 'http://100.86.234.20:8000';
 
   Future<void> analyzeImage(XFile image) async {
     _loading = true;
