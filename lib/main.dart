@@ -43,7 +43,7 @@ class CafeVisionService extends ChangeNotifier {
   bool get loading => _loading;
 
   // Mac IP on local network (update if your IP changes)
-      static const String serverUrl = 'https://insulation-environments-enhancement-employers.trycloudflare.com';
+      static const String serverUrl = 'https://cafearchive.onrender.com';
 
   Future<void> analyzeImage(XFile image) async {
     _loading = true;
