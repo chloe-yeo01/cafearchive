@@ -51,6 +51,16 @@ class CafeVisionService extends ChangeNotifier {
     notifyListeners();
 
     try {
+      // Detect content type from file extension
+      final ext = image.path.split('.').last.toLowerCase();
+      final mimeMap = {
+        'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
+        'png': 'image/png', 'gif': 'image/gif',
+        'webp': 'image/webp', 'bmp': 'image/bmp',
+        'heic': 'image/heic', 'heif': 'image/heif',
+      };
+      final mimeType = mimeMap[ext] ?? 'image/jpeg';
+
       final request = http.MultipartRequest(
         'POST',
         Uri.parse('$serverUrl/api/analyze'),
@@ -58,7 +68,7 @@ class CafeVisionService extends ChangeNotifier {
       request.files.add(await http.MultipartFile.fromPath(
         'file',
         image.path,
-        contentType: MediaType('image', 'jpeg'),
+        contentType: MediaType.parse(mimeType),
       ));
       final response = await request.send();
       final body = await response.stream.bytesToString();
