@@ -49,7 +49,7 @@ def extract_text_tesseract(file_path: str) -> str:
         from PIL import Image
 
         img = Image.open(file_path)
-        text = pytesseract.image_to_string(img, lang='Hangul+eng')
+        text = pytesseract.image_to_string(img, lang='kor+eng')
         return text.strip() or ""
     except Exception:
         try:
